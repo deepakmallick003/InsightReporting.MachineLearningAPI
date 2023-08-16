@@ -1,0 +1,22 @@
+applications:
+  - name: "insightreportingml.api"
+
+    technology: static
+
+    ingress:
+      enabled: true
+      domain: "rest.cabi.org"
+      basePath: "/insightreportingml"
+
+    seq:
+      -enabled: true
+    
+    mountSecrets:
+      - secret: azure-ad
+        mappings:
+          - key: insightreportingml-api-clientid
+            nameAs: AzureAd__ClientId
+          - key: TenantId
+            nameAs: AzureAd__TenantId
+          - key: insightreportingml-openapi-clientid
+            nameAs: OpenApiAzureAd__ClientId
