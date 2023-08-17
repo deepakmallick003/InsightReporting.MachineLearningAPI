@@ -1,10 +1,11 @@
 import logging
 import core.logging
-from fastapi import FastAPI, Request, Security
+from fastapi import FastAPI, Request, Security, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_azure_auth import SingleTenantAzureAuthorizationCodeBearer
 from core.config import settings
 from routers import health
+from scripts import transform
 
 def get_application() -> FastAPI:
 
@@ -51,7 +52,12 @@ def get_application() -> FastAPI:
     async def root(request: Request):
         logging.warning("Hello, {name}!", name="World")
         return {"message": "Hello World" }
+    
 
+    @app.post("/process", dependencies=[Security(azure_scheme)], tags=["API"])
+    async def process(payload: dict = Body(...)):
+        return transform.transform(payload)
+        
     return app
 
 app = get_application()
