@@ -2,10 +2,13 @@ import spacy
 import re
 from rake_nltk import Rake
 
-
-# Load the English model
-
 def extract_keywords(text, num_keywords=10):
+
+    # Clean the text
+    text = re.sub('[^a-zA-Z0-9]',' ', text)
+    text = re.sub(' +', ' ', text)
+
+    # Load the English model
     nlp = spacy.load("en_core_web_sm")
 
     # Process the text
@@ -19,9 +22,11 @@ def extract_keywords(text, num_keywords=10):
 
     # Extract keywords using RAKE
     rake = Rake(max_length=3)  # Initialize RAKE with a maximum phrase length of 3 words
-    rake.extract_keywords_from_text(extended_text)
+    rake.extract_keywords_from_text(text)
     ranked_phrases = rake.get_ranked_phrases_with_scores()
 
+    print(ranked_phrases)
+    print('-----------------------')
     # Filter out keywords with unwanted entity types
     keywords = []
     for score, phrase in ranked_phrases:
@@ -35,5 +40,5 @@ def extract_keywords(text, num_keywords=10):
     # Combine keywords into a single string
     combined_keywords = ";".join(keyword for keyword in keywords)
 
-    combined_keywords = re.sub(r';+', ';', re.sub(r'^[^a-zA-Z0-9]+|[^a-zA-Z0-9]+$', '', combined_keywords))
+    #combined_keywords = re.sub(r';+c', ';', re.sub(r'^[^a-zA-Z0-9]+|[^a-zA-Z0-9]+$', '', combined_keywords))
     return combined_keywords

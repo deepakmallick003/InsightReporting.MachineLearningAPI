@@ -6,3 +6,6 @@ seqlog>=0.3.27
 fastapi_azure_auth>=4.2.1
 spacy>=3.6
 rake_nltk>=1.0.6
+httpx==0.19.0
+pytest>=7.4.0
+

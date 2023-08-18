@@ -1,6 +1,7 @@
 import logging
 import core.logging
 from fastapi import FastAPI, Request, Security, Body
+from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_azure_auth import SingleTenantAzureAuthorizationCodeBearer
 from core.config import settings
@@ -12,6 +13,7 @@ def get_application() -> FastAPI:
     app = FastAPI(
         version='1.0.0',
         title=settings.PROJECT_NAME,
+        description="API's to process data from EIOS, add keyword and predication",
         docs_url= settings.DOC_URL,
         root_path=settings.DEPLOYED_BASE_PATH,
         swagger_ui_oauth2_redirect_url='/oauth2-redirect',
@@ -48,12 +50,10 @@ def get_application() -> FastAPI:
     #include healthcheck router
     app.include_router(health.router)
 
-    @app.get("/", dependencies=[Security(azure_scheme)], tags=["API"])
+    @app.get("/", include_in_schema=False)
     async def root(request: Request):
-        logging.warning("Hello, {name}!", name="World")
-        return {"message": "Hello World" }
+       return RedirectResponse('swagger')
     
-
     @app.post("/process", dependencies=[Security(azure_scheme)], tags=["API"])
     async def process(payload: dict = Body(...)):
         return transform.transform(payload)
