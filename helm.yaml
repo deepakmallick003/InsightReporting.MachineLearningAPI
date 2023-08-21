@@ -10,6 +10,10 @@ applications:
 
     seq:
       -enabled: true
+
+    smbShares:
+      - name: mlmodels
+        mountPath: /app/mlmodels
     
     mountSecrets:
       - secret: azure-ad
@@ -20,3 +24,8 @@ applications:
             nameAs: AzureAd__TenantId
           - key: insightreportingml-openapi-clientid
             nameAs: OpenApiAzureAd__ClientId
+
+smbShares:
+  - name: mlmodels
+    location: \\cabifs\InsightReportingMLModels
+    credentials: contentsubmission-serviceaccount

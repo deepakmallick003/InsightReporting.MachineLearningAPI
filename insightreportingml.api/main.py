@@ -1,5 +1,6 @@
 import logging
 import core.logging
+import os
 from fastapi import FastAPI, Request, Security, Body
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -57,6 +58,13 @@ def get_application() -> FastAPI:
     @app.post("/process", dependencies=[Security(azure_scheme)], tags=["API"])
     async def process(payload: dict = Body(...)):
         return transform.transform(payload)
+
+    @app.get("/readfile",tags=["API"])
+    async def read():
+        directory = os.getcwd()
+        fileObject = open( directory + settings.MLMODEL_PATH + "/readme.txt", "r")
+        data = fileObject.read()
+        return data
         
     return app
 
