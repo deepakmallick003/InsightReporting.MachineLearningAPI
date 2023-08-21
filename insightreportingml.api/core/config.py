@@ -14,7 +14,7 @@ class ApplicationSettings(BaseSettings):
 class Settings(ApplicationSettings):
     PROJECT_NAME: str = 'Insight Reporting'
     DOC_URL: str = '/swagger'
-    MLMODEL_PATH: str = '/app/mlmodels'
+    MLMODEL_PATH: str = '/mlmodels'
 
     class Config:
         env_file = ".env"
