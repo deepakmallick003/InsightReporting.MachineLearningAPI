@@ -21,6 +21,9 @@ RUN python -m nltk.downloader punkt
 RUN python -m nltk.downloader stopwords
 
 #
+RUN python -m nltk.downloader averaged_perceptron_tagger
+
+#
 RUN python -m nltk.downloader wordnet
 
 # 
