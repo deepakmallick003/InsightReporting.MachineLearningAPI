@@ -1,6 +1,8 @@
 from . import extractkeywords
+from . import predictor
 
-def transform(data: dict):
+
+def transform(data: dict, version='1'):
     eios_data_list = []
 
     if 'result' in data:
@@ -19,7 +21,7 @@ def transform(data: dict):
                 desc_tran = item['translatedDescription'] if item['translatedDescription'] else ""
                 abs_sumry = item['abstractiveSummary'] if item['abstractiveSummary'] else ""
                 trgrs = sorted(set([value for item in item['triggers']
-                            for value in item['values']]))
+                                    for value in item['values']]))
                 trgrs = ' '.join(trgrs)
                 locations = item['locations']
                 area = locations[0]['areaFullName'] if locations else ""
@@ -41,11 +43,17 @@ def transform(data: dict):
 
                 src = item.get("source", {})
                 source_keys = ["id", "name", "country",
-                            "region", "language", "subject"]
+                               "region", "language", "subject"]
+                
                 Source, Source_Name, Source_Country, Source_Region, Source_Language, Source_Subject = (
                     ("" if value is None else value) for value in (src.get(key) for key in source_keys)
                 )
 
+                keywords = extractkeywords.extract_keywords(Merged_Texts)
+
+                score = predictor.predictor.predict([Title, ISO_Language, Preferred_scientific_name, GeoRss_Point,
+                                                     Source_Name, Source_Country, Source_Region, Source_Subject],
+                                                    keywords, version)
                 eios_data_dict = {
                     "ItemUniqueID": Guid,
                     "Title": Title,
@@ -61,7 +69,9 @@ def transform(data: dict):
                     "SourceLanguage": Source_Language,
                     "SourceSubject": Source_Subject,
                     "ScientificName": Preferred_scientific_name,
-                    "Keywords": extractkeywords.extract_keywords(Merged_Texts)
+                    "Keywords": keywords,
+                    "Accuracy": score,
+                    "ModelVersionID": version
                 }
 
                 eios_data_list.append(eios_data_dict)

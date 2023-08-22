@@ -9,7 +9,6 @@ class TestExtractKeywords(unittest.TestCase):
     
     def test_english(self):
         keywords = extractkeywords.extract_keywords("not-for-profit organization");
-        print(keywords)
         self.assertEqual(keywords,"profit organization")
 
 if __name__=='__main__':
