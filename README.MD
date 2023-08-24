@@ -36,6 +36,10 @@ The purpose of the PlantwisePlus.InsightReporting.MicroService.MachineLearningAP
 ### Notes
 * Create virtual enviornment 
 **python -m venv .venv**
+* Activate Virtual Environment
+**.venv\Scripts\activate**
+* Change Project Directory to insightreportingml.api
+**cd insight***
 * Install dependencies
 **pip install -r requirements.txt**
 * Run application
