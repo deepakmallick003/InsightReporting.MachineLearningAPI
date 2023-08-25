@@ -24,6 +24,10 @@ applications:
             nameAs: AzureAd__TenantId
           - key: insightreportingml-openapi-clientid
             nameAs: OpenApiAzureAd__ClientId
+      - secret: insightreporting-modelstorage
+        mappings:
+          - key: StorageDirectory
+            nameAs: FileStoreSettings__StorageDirectory
 
 smbShares:
   - name: mlmodels

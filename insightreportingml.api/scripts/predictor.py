@@ -21,7 +21,7 @@ class Predictor:
         wd = os.getcwd()
 
         model_path = wd + settings.MLMODEL_PATH + \
-            '/' + version + '/'
+          '/' + settings.MLMODEL_DIRECTORY +  '/' + version + '/'
 
         input[0] = self.cleantext(input[0], keywords)
 

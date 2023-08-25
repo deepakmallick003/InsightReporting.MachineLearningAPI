@@ -10,6 +10,7 @@ class ApplicationSettings(BaseSettings):
     OPENAPI_CLIENT_ID: str = Field(default='', env='OpenApiAzureAd__ClientId')
     APP_CLIENT_ID: str = Field(default='', env='AzureAd__ClientId')
     TENANT_ID: str = Field(default='', env='AzureAd__TenantId')
+    MLMODEL_DIRECTORY: str = Field(default='', env='FileStoreSettings__StorageDirectory')
 
 class Settings(ApplicationSettings):
     PROJECT_NAME: str = 'Insight Reporting'
