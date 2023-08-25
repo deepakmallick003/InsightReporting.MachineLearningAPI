@@ -2,9 +2,22 @@ from . import extractkeywords
 from . import predictor
 import re
 
+list_type_seperator = ';'
+
+def get_Preferred_scientific_name(psn_arr, space=False):
+    if space == True:
+        return list_type_seperator.join(
+            re.sub(r'([a-z])([A-Z])', lambda m: m.group(1) + ' ' +
+                   m.group(2), item['key'][2:item['key'].rfind('-PHT')])
+            for item in psn_arr if item['key'].startswith('l:') and item['key'].endswith('-PHT')
+        )
+    else:
+        return list_type_seperator.join([item['key'][2:item['key'].rfind(
+            '-PHT')] for item in psn_arr if item['key'].startswith('l:') and item['key'].endswith('-PHT')])
+
+
 def transform(data: dict, version='1'):
     eios_data_list = []
-    list_type_seperator = ';'
 
     if 'result' in data:
         json_results_arr = data["result"]
@@ -15,15 +28,11 @@ def transform(data: dict, version='1'):
                 ISO_Language = item['languageCode']
                 Language_Name = item['language']
                 psn_arr = [x for x in item['triggers'] if 'PHT' in x['key']]
-                Preferred_scientific_name = list_type_seperator.join(
-                    re.sub(r'([a-z])([A-Z])', lambda m: m.group(1) + ' ' + m.group(2), item['key'][2:item['key'].rfind('-PHT')])
-                    for item in psn_arr if item['key'].startswith('l:') and item['key'].endswith('-PHT')
-                )
 
                 desc = item['description'] if item['description'] else ""
                 desc_tran = item['translatedDescription'] if item['translatedDescription'] else ""
                 abs_sumry = item['abstractiveSummary'] if item['abstractiveSummary'] else ""
-                
+
                 locations = item['locations']
                 area = locations[0]['areaFullName'] if locations else ""
                 area = ' '.join(area) if area else ""
@@ -46,20 +55,25 @@ def transform(data: dict, version='1'):
                 src = item.get("source", {})
                 source_keys = ["id", "name", "country",
                                "region", "language", "subject", "type"]
-                
+
                 Source, Source_Name, Source_Country, Source_Region, Source_Language, Source_Subject, Source_Type = (
                     ("" if value is None else value) for value in (src.get(key) for key in source_keys)
                 )
 
-                Categories = '; '.join(tag["label"] for tag in item.get("tags", []) if tag.get("folders"))
-                MentionedCountries = '; '.join(country["label"] for country in item.get("affectedCountries", []))
+                Categories = list_type_seperator.join(
+                    tag["label"] for tag in item.get("tags", []) if tag.get("folders"))
+                
+                MentionedCountries = list_type_seperator.join(
+                    country["label"] for country in item.get("affectedCountries", []))
 
                 trgr_seen = set()
-                trgrs = list_type_seperator.join([value.lower() for trigger in item['triggers'] for value in trigger['values'] if value.lower() not in (trgr_seen := trgr_seen or set()) and not trgr_seen.add(value.lower())])
+                trgrs = list_type_seperator.join([value.lower() for trigger in item['triggers'] for value in trigger['values'] if value.lower(
+                ) not in (trgr_seen := trgr_seen or set()) and not trgr_seen.add(value.lower())])
                 keywords = extractkeywords.extract_keywords(Merged_Texts)
-                Merged_Keywords_Triggers = list_type_seperator.join(filter(None, [trgrs, keywords]))
+                Merged_Keywords_Triggers = list_type_seperator.join(
+                    filter(None, [trgrs, keywords]))
 
-                Score = predictor.predictor.predict([Title, ISO_Language, Preferred_scientific_name, GeoRss_Point,
+                Score = predictor.predictor.predict([Title, ISO_Language, get_Preferred_scientific_name(psn_arr, False), GeoRss_Point,
                                                      Source_Name, Source_Country, Source_Region, Source_Subject],
                                                     keywords, version)
                 eios_data_dict = {
@@ -79,7 +93,7 @@ def transform(data: dict, version='1'):
                     "SourceLanguage": Source_Language,
                     "SourceSubject": Source_Subject,
                     "SourceType": Source_Type,
-                    "ScientificName": Preferred_scientific_name,
+                    "ScientificName": get_Preferred_scientific_name(psn_arr, True),
                     "Categories": Categories,
                     "MentionedCountries": MentionedCountries,
                     "Keywords": Merged_Keywords_Triggers,
