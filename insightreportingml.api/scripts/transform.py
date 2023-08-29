@@ -75,7 +75,7 @@ def transform(data: dict, version='1'):
 
                 Score = predictor.predictor.predict([Title, ISO_Language, get_Preferred_scientific_name(psn_arr, False), GeoRss_Point,
                                                      Source_Name, Source_Country, Source_Region, Source_Subject],
-                                                    keywords, version)
+                                                    Merged_Keywords_Triggers, version)
                 eios_data_dict = {
                     "ItemUniqueID": RssItemId,
                     "EIOSItemID": EIOSItemId,
