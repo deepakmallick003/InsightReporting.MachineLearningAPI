@@ -16,7 +16,7 @@ def get_Preferred_scientific_name(psn_arr, space=False):
             '-PHT')] for item in psn_arr if item['key'].startswith('l:') and item['key'].endswith('-PHT')])
 
 
-def transform(data: dict, version='1'):
+def transform(data: dict, rfc_model_version: int, lr_model_version: int):
     eios_data_list = []
 
     if 'result' in data:
@@ -75,7 +75,7 @@ def transform(data: dict, version='1'):
 
                 Score = predictor.predictor.predict([Title, ISO_Language, get_Preferred_scientific_name(psn_arr, False), GeoRss_Point,
                                                      Source_Name, Source_Country, Source_Region, Source_Subject],
-                                                    Merged_Keywords_Triggers, version)
+                                                  Merged_Keywords_Triggers, rfc_model_version, lr_model_version)
                 eios_data_dict = {
                     "ItemUniqueID": RssItemId,
                     "EIOSItemID": EIOSItemId,
@@ -98,7 +98,8 @@ def transform(data: dict, version='1'):
                     "MentionedCountries": MentionedCountries,
                     "Keywords": Merged_Keywords_Triggers,
                     "Accuracy": Score,
-                    "ModelVersionID": version
+                    "RFCModelVersionID": rfc_model_version,
+                    "LRModelVersionID": lr_model_version,
                 }
 
                 eios_data_list.append(eios_data_dict)

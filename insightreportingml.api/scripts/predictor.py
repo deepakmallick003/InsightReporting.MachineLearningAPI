@@ -16,18 +16,20 @@ class Predictor:
 
     wl = WordNetLemmatizer()
 
-    def predict(self, input: [], keywords: str, version: str):
+    def predict(self, input: [], keywords: str, rfc_version: int, lr_version: int):
 
         wd = os.getcwd()
 
         model_path = wd + settings.MLMODEL_PATH + \
-          '/' + settings.MLMODEL_DIRECTORY +  '/' + version + '/'
+          '/' + settings.MLMODEL_DIRECTORY
+        rfc_model_path = model_path+ '/' + settings.MLMODEL_ALLFIELDS_NAME +'/' + str(rfc_version) + '/'
+        lr_model_path = model_path+ '/' + settings.MLMODEL_TEXTONLY_NAME +'/' + str(lr_version) + '/'
 
         input[0] = self.cleantext(input[0], keywords)
 
-        pred_prob1 = self.all_field_predict(input, model_path)
+        pred_prob1 = self.all_field_predict(input, rfc_model_path)
 
-        pred_prob2 = self.text_only_prediction(input[0], model_path)
+        pred_prob2 = self.text_only_prediction(input[0], lr_model_path)
 
         avg_prob = sum([pred_prob1, pred_prob2]) / 2
         avg_prob_per = round((avg_prob*100), 2)
@@ -36,10 +38,10 @@ class Predictor:
 
     # Text only prediction
     def text_only_prediction(self, input_text: str, model_path: str):
-        with open(model_path + settings.MLMODEL_TEXTONLY_NAME, 'rb') as file:
+        with open(model_path + settings.MLMODEL_MODEL_SAVED_AS_NAME, 'rb') as file:
             model_textonly = pickle.load(file)
 
-        with open(model_path + settings.MLMODEL_TEXTONLY_VECTOR_NAME, 'rb') as file:
+        with open(model_path + settings.MLMODEL_VECTORIZER_SAVED_AS_NAME, 'rb') as file:
             model_textonly_vector = joblib.load(file)
 
         X_test = [input_text]
@@ -51,10 +53,10 @@ class Predictor:
 
     # All fields prediction
     def all_field_predict(self, input_list: [], model_path: str):
-        with open(model_path + settings.MLMODEL_ALLFIELDS_NAME, 'rb') as file:
+        with open(model_path + settings.MLMODEL_MODEL_SAVED_AS_NAME, 'rb') as file:
             model_allfields = pickle.load(file)
 
-        with open(model_path + settings.MLMODEL_ALLFIELDS_VECTOR_NAME, 'rb') as file:
+        with open(model_path + settings.MLMODEL_VECTORIZER_SAVED_AS_NAME, 'rb') as file:
             model_allfields_vector = joblib.load(file)
 
         X_test = pd.DataFrame(columns=['clean_text', 'iso_language', 'species_name',
