@@ -16,11 +16,10 @@ class Settings(ApplicationSettings):
     PROJECT_NAME: str = 'Insight Reporting'
     DOC_URL: str = '/swagger'
     MLMODEL_PATH: str = '/mlmodels'
-    MLMODEL_ALLFIELDS_NAME = 'model_allfields.pkl'
-    MLMODEL_TEXTONLY_NAME = 'model_textonly.pkl'
-
-    MLMODEL_ALLFIELDS_VECTOR_NAME = 'model_allfields_vectorizer.joblib'
-    MLMODEL_TEXTONLY_VECTOR_NAME = 'model_textonly_vectorizer.joblib'
+    MLMODEL_ALLFIELDS_NAME = 'RFC Model'
+    MLMODEL_TEXTONLY_NAME = 'TF-IDF Model'
+    MLMODEL_MODEL_SAVED_AS_NAME='model.pkl'
+    MLMODEL_VECTORIZER_SAVED_AS_NAME='vectorizer.joblib'
 
     class Config:
         env_file = ".env"

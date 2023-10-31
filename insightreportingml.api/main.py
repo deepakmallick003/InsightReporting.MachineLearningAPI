@@ -64,11 +64,11 @@ def get_application() -> FastAPI:
     async def root(request: Request):
         return RedirectResponse('swagger')
 
-    # endpoint tp process EIOS data
-    @app.post("/process/{modelVersion}", dependencies=[Security(azure_scheme)], tags=["API"])
-    async def process_data(modelVersion, payload: dict = Body(...)):
-
-        return transform.transform(payload, modelVersion)
+    # endpoint to process and predict EIOS data
+    @app.post("/process/{rfcModelVersion}/{lrModelVersion}", dependencies=[Security(azure_scheme)], tags=["API"])
+    async def process_data(rfcModelVersion: int, lrModelVersion: int, payload: dict = Body(...)):
+      
+        return transform.transform(payload, rfcModelVersion, lrModelVersion)
 
     return app
 

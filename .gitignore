@@ -1,0 +1,9 @@
+insightreportingml.api/.env
+/.vs
+/insightreportingml.api/core/__pycache__
+/insightreportingml.api/routers/__pycache__
+/insightreportingml.api/scripts/__pycache__
+/insightreportingml.api/tests/__pycache__
+/insightreportingml.api/__pycache__
+/insightreportingml.api/.vscode
+/insightreportingml.api/mlmodels/local
