@@ -17,5 +17,5 @@ def test_read_health_kubernetes():
     assert response.status_code == 200
 
 def test_authentication():
-    response = client.post("/process/1")
+    response = client.post("/process/1/2")
     assert response.status_code == 401.

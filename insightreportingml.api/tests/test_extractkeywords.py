@@ -1,6 +1,6 @@
 import unittest
 
-from scripts import * 
+from scripts import extractkeywords 
 
 class TestExtractKeywords(unittest.TestCase):
     def test_non_english(self):

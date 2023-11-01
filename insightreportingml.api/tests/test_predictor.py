@@ -19,7 +19,7 @@ class TestTransformData(unittest.TestCase):
         raw_input_list = [title, iso, pref_sci_name, geo_rss,
                           src_name, src_country, src_region, src_subject]
 
-        score = pred.predict(raw_input_list, keywords, '1')
+        score = pred.predict(raw_input_list, keywords, 1, 2)
 
         self.assertGreater(score, 50)
 
