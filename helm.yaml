@@ -31,5 +31,5 @@ applications:
 
 smbShares:
   - name: mlmodels
-    location: \\cabifs.cabi.org\InsightReportingMLModels
+    location: \\cabifs\InsightReportingMLModels
     credentials: contentsubmission-serviceaccount
