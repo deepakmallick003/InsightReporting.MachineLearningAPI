@@ -1,6 +1,7 @@
 from . import extractkeywords
 from . import predictor
 import re
+from translation_utils import translate_to_english
 
 list_type_seperator = ';'
 
@@ -27,9 +28,11 @@ def transform(data: dict, rfc_model_version: int, lr_model_version: int):
                 Title = item['title']
                 ISO_Language = item['languageCode']
                 Language_Name = item['language']
+                CABITranslatedTitle = translate_to_english(item['title'], item['languageCode'])
                 psn_arr = [x for x in item['triggers'] if 'PHT' in x['key']]
 
                 desc = item['description'] if item['description'] else ""
+                CABITranslatedDescription = translate_to_english(item['description'], item['languageCode']) if item['description'] else ""
                 desc_tran = item['translatedDescription'] if item['translatedDescription'] else ""
                 abs_sumry = item['abstractiveSummary'] if item['abstractiveSummary'] else ""
 
@@ -79,7 +82,8 @@ def transform(data: dict, rfc_model_version: int, lr_model_version: int):
                 eios_data_dict = {
                     "ItemUniqueID": RssItemId,
                     "EIOSItemID": EIOSItemId,
-                    "Title": Title,
+                    "Title": CABITranslatedTitle,
+                    "CABITranslatedDescription": CABITranslatedDescription,
                     "ItemLink": Results,
                     "PublishedDate": ReportDate,
                     "ISOLanguageCode": ISO_Language,
