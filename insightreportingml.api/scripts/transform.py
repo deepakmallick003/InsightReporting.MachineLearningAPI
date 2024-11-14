@@ -1,7 +1,7 @@
 from . import extractkeywords
 from . import predictor
 import re
-from translation_utils import translate_to_english
+from .translation_utils import translate_to_english
 
 list_type_seperator = ';'
 
