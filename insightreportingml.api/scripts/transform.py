@@ -75,10 +75,10 @@ def transform(data: dict, rfc_model_version: int, lr_model_version: int):
                 keywords = extractkeywords.extract_keywords(Merged_Texts)
                 Merged_Keywords_Triggers = list_type_seperator.join(
                     filter(None, [trgrs, keywords]))
-
-                Score = predictor.predictor.predict([Title, ISO_Language, get_Preferred_scientific_name(psn_arr, False), GeoRss_Point,
-                                                     Source_Name, Source_Country, Source_Region, Source_Subject],
-                                                  Merged_Keywords_Triggers, rfc_model_version, lr_model_version)
+                Score = 0
+                # Score = predictor.predictor.predict([Title, ISO_Language, get_Preferred_scientific_name(psn_arr, False), GeoRss_Point,
+                #                                      Source_Name, Source_Country, Source_Region, Source_Subject],
+                #                                   Merged_Keywords_Triggers, rfc_model_version, lr_model_version)
                 eios_data_dict = {
                     "ItemUniqueID": RssItemId,
                     "EIOSItemID": EIOSItemId,

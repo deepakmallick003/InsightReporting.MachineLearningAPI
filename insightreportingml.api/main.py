@@ -65,7 +65,7 @@ def get_application() -> FastAPI:
         return RedirectResponse('swagger')
 
     # endpoint to process and predict EIOS data
-    @app.post("/process/{rfcModelVersion}/{lrModelVersion}", dependencies=[Security(azure_scheme)], tags=["API"])
+    @app.post("/process/{rfcModelVersion}/{lrModelVersion}", dependencies=[], tags=["API"])
     async def process_data(rfcModelVersion: int, lrModelVersion: int, payload: dict = Body(...)):
       
         return transform.transform(payload, rfcModelVersion, lrModelVersion)

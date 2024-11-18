@@ -1,5 +1,6 @@
 insightreportingml.api/.env
 /.vs
+/.venv
 /insightreportingml.api/core/__pycache__
 /insightreportingml.api/routers/__pycache__
 /insightreportingml.api/scripts/__pycache__

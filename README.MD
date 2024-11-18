@@ -47,7 +47,7 @@ The purpose of the PlantwisePlus.InsightReporting.MicroService.MachineLearningAP
 * Run test
 **pytest**
 * Install other libraries
-  * python -m spacy download en_core_web_sm
-  * python -m nltk.downloader punkt
-  * python -m nltk.downloader stopwords
-  * python -m nltk.downloader wordnet
+  * python3.9 -m spacy download en_core_web_sm
+  * python3.9 -m nltk.downloader punkt
+  * python3.9 -m nltk.downloader stopwords
+  * python3.9 -m nltk.downloader wordnet
