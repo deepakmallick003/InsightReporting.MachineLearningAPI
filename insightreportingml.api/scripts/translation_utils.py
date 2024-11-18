@@ -8,7 +8,6 @@ def translate_to_english(text, language_code):
     translated_text = []
 
     chunks = [text[i:i + max_chars_per_request] for i in range(0, len(text), max_chars_per_request)]
-    translator = pipeline("translation", model=f"Helsinki-NLP/opus-mt-{language_code}-en")
 
     for chunk in chunks:
         try:
@@ -18,6 +17,7 @@ def translate_to_english(text, language_code):
         
         except TooManyRequests:
             print("Too many requests to the Google translation server. Switching to Hugging Face fallback translation.")
+            translator = pipeline("translation", model=f"Helsinki-NLP/opus-mt-{language_code}-en")
             return fallback_translation(chunks, translator)
 
         except Exception as e:
