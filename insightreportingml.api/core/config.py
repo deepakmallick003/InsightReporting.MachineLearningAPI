@@ -1,9 +1,7 @@
 # Application Settings
 # From the enviornments vaiables
 
-from pydantic import Field
-from pydantic_settings import BaseSettings
-from typing import ClassVar
+from pydantic import Field, BaseSettings
 
 class ApplicationSettings(BaseSettings):
     SEQ_API_KEY: str = Field(default='',env='SEQ_API_KEY')
@@ -15,13 +13,13 @@ class ApplicationSettings(BaseSettings):
     MLMODEL_DIRECTORY: str = Field(default='', env='FileStoreSettings__StorageDirectory')
 
 class Settings(ApplicationSettings):
-    PROJECT_NAME: ClassVar[str] = 'Insight Reporting'
-    DOC_URL: ClassVar[str] = '/swagger'
-    MLMODEL_PATH: ClassVar[str] = '/mlmodels'
-    MLMODEL_ALLFIELDS_NAME: ClassVar[str] = 'RFC Model'
-    MLMODEL_TEXTONLY_NAME: ClassVar[str] = 'TF-IDF Model'
-    MLMODEL_MODEL_SAVED_AS_NAME: ClassVar[str] = 'model.pkl'
-    MLMODEL_VECTORIZER_SAVED_AS_NAME: ClassVar[str] = 'vectorizer.joblib'
+    PROJECT_NAME: str = 'Insight Reporting'
+    DOC_URL: str = '/swagger'
+    MLMODEL_PATH: str = '/mlmodels'
+    MLMODEL_ALLFIELDS_NAME = 'RFC Model'
+    MLMODEL_TEXTONLY_NAME = 'TF-IDF Model'
+    MLMODEL_MODEL_SAVED_AS_NAME='model.pkl'
+    MLMODEL_VECTORIZER_SAVED_AS_NAME='vectorizer.joblib'
 
     class Config:
         env_file = ".env"
